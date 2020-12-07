@@ -1,14 +1,14 @@
+# frozen_string_literal: false
+
+# Entry Point class
 class BasicFileReader
   class << self
     def lines(file_name:, &block)
-      file = open(file_name)
+      file = File.open(file_name)
       [].tap do |content_lines|
         file.each do |line|
-          if block
-            content_lines << (yield line.gsub("\n", ''))
-          else
-            content_lines << line.gsub("\n", '')
-          end
+          content_lines << (yield line.gsub("\n", '')) if block
+          content_lines << line.gsub("\n", '') unless block
         end
         file.close
       end
